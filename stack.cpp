@@ -255,8 +255,8 @@ struct_error_t stack_pop(stack_info_t* stack_info, TYPE_DATA_ELEMENTS* pop_eleme
     (stack_info -> size)--;
 
     *pop_element = (stack_info -> real_data)[stack_info -> size]; 
-    ON_DBG(stack_info -> last_popped_element = (stack_info -> real_data)[stack_info -> size];)
-    (stack_info -> real_data)[stack_info -> size] = POISON;
+    ON_DBG(stack_info -> last_popped_element = (stack_info -> real_data)[stack_info -> size];
+           (stack_info -> real_data)[stack_info -> size] = POISON;)
   
     if ((stack_info -> capacity) / COEF_REALLOC_REDUCE == (stack_info -> size) && (stack_info -> capacity) > 4) { 
         stack_info -> capacity /=  COEF_REALLOC_REDUCE;
@@ -418,8 +418,8 @@ struct_error_t check_empty_stack_for_pop(stack_info_t* stack_info) {
 long long hash_function_for_struct(stack_info_t* stack_info) {
 
     long long hash_struct = 0;
-    for(size_t i = 0; i < sizeof(stack_info_t) - sizeof(stack_info -> hash_struct) - sizeof(stack_info -> hash_data) - sizeof(stack_info -> struct_error) - 
-                      sizeof(stack_info -> str_code_failure) - sizeof(stack_info -> func_failure); i++) {
+    for(size_t i = 0; i < sizeof(stack_info_t) - sizeof(stack_info -> hash_struct) - sizeof(stack_info -> hash_data) ON_DBG(- sizeof(stack_info -> struct_error) - 
+                      sizeof(stack_info -> str_code_failure) - sizeof(stack_info -> func_failure)); i++) {
         hash_struct += ((char*)((char*)stack_info + sizeof(stack_info -> hash_struct) + sizeof(stack_info -> hash_data)))[i];
     }
 
